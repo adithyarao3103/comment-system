@@ -246,57 +246,53 @@ commentList += `</div></div>`;
 
 let scripts = `
         <script>
-        console.log('Script is running'); // Check if the script runs
-        const form = document.getElementById('addCommentForm');
-        console.log('Form element:', form); // Check if the form element is found
-        if (!form) {
-            console.error('Form not found');
-        }
-
-        async function submit(){
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
+        document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-            // Reset error and success messages
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
+        // Show loading spinner
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
         
-            // Get form data
-            const name = encodeURIComponent(document.getElementById('name').value);
-            const email = encodeURIComponent(document.getElementById('email').value);
-            const comment = encodeURIComponent(document.getElementById('comment').value);
+        // Reset error and success messages
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'none';
         
-            try {
-                // Construct the URL with encoded parameters
-                const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
+        // Get form data
+        const name = encodeURIComponent(document.getElementById('name').value);
+        const email = encodeURIComponent(document.getElementById('email').value);
+        const comment = encodeURIComponent(document.getElementById('comment').value);
+        
+        try {
+            // Construct the URL with encoded parameters
+            const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
                     name + "&comment=" + comment + "&email=" + email;
             
-                // Make the request
-                const response = await fetch(url);
-                const data = await response.json(); // Parse the JSON response
+            // Make the request
+            const response = await fetch(url);
+            const data = await response.json(); // Parse the JSON response
             
-                if (response.ok) {
-                    // Hide the form
-                    document.getElementById('comment-form').style.display = 'none';
-                    // Show success message
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    // Show error message with the error from the server if available
-                    const errorMessage = document.getElementById('errorMessage');
-                    errorMessage.textContent = data.error || 'An error occurred while submitting the comment.';
-                    errorMessage.style.display = 'block';
-                }
-            } catch (error) {
-                // Show error message for network or parsing errors
+            if (response.ok) {
+                // Hide the form
+                document.getElementById('comment-form').style.display = 'none';
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+            } else {
+                // Show error message with the error from the server if available
                 const errorMessage = document.getElementById('errorMessage');
-                errorMessage.textContent = 'An error occurred while submitting the comment. Please try again.';
+                errorMessage.textContent = data.error || 'An error occurred while submitting the comment.';
                 errorMessage.style.display = 'block';
-                console.error('Error:', error);
-            } finally {
-                // Hide loading spinner
-                loading.style.display = 'none';
             }
+        } catch (error) {
+            // Show error message for network or parsing errors
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'An error occurred while submitting the comment. Please try again.';
+            errorMessage.style.display = 'block';
+            console.error('Error:', error);
+        } finally {
+            // Hide loading spinner
+            loading.style.display = 'none';
         }
+    });
     </script>
 `
 
