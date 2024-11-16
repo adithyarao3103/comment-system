@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import crypto from 'crypto';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
@@ -7,11 +8,19 @@ export default async function handler(req, res) {
         res.status(200).end();
         return;
     }
-    const password = req.headers.authorization;
-    const { id } = req.body;
+    const {id, password} = req.query;
 
-    if (password !== process.env.MODERATOR_PASSWORD || !id) {
-        return res.status(403).send('Unauthorized or missing fields');
+    const hashedPassword = crypto
+        .createHash('sha256')
+        .update(password)
+        .digest('hex');
+
+    const correctPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+
+    if (!correctPasswordHash || hashedPassword !== correctPasswordHash) {
+        res.setHeader('Content-Type', 'text/html');
+        res.status(401).send(renderHtml('Invalid password'));
+        return;
     }
 
     const { error } = await supabase.from('comments').delete().eq('id', id);
