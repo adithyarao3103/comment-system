@@ -154,16 +154,16 @@ export default async function handler(req, res) {
                 .select('*')
                 .eq('verified', false)
                 .order('created_at', { ascending: false })
-
-
+        
         return `
             <html>
                 <head>
                     ${commonStyles}
                     <script>
                         const password = 'xyz';
-
+                        console.log(${error});
                         console.log(${comments});
+
 
                         function showAlert(message, type = 'success') {
                             const alertDiv = document.createElement('div');
