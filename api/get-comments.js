@@ -242,6 +242,8 @@ data.forEach(comment => {
             </div>`;
 });
 
+commentList += `</div></div>`;
+
 let scripts = `
         <script>
         document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
