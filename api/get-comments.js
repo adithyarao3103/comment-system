@@ -177,7 +177,8 @@ data.forEach(comment => {
                 <div class="comment-content">${comment.comment}</div>
             </div>`;
 });
-html = `${styles} ${addform} ${commentList}`
+
+const html = `${styles} ${addform} ${commentList}`
 
 res.setHeader('Content-Type', 'text/html');
 res.status(200).send(html);
