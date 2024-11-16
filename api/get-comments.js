@@ -225,7 +225,7 @@ let addform = `
                     <textarea id="comment" name="comment" placeholder="Write your comment here..." required></textarea>
                 </div>
                 <div class="submit-wrapper">
-                    <button type="submit" onclick="submit()">Post Comment</button>
+                    <button type="submit" onclick="return false;">Post Comment</button>
                     <div id="loading" class="loading"></div>
                 </div>
             </form>
