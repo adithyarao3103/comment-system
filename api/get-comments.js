@@ -299,5 +299,7 @@ const html = `
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> ${styles} ${addform} ${commentList} ${scripts}`
 
 res.setHeader('Content-Type', 'text/html');
+res.setHeader('Access-Control-Allow-Origin', '*');  // Or specific origins
+res.setHeader('Access-Control-Allow-Methods', 'GET');
 res.status(200).send(html);
 }
