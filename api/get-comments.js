@@ -253,7 +253,7 @@ let scripts = `
             console.error('Form not found');
         }
 
-        function submit(){
+        async function submit(){
             const loading = document.getElementById('loading');
             loading.style.display = 'block';
         
