@@ -7,14 +7,18 @@ if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
 }
 
-const { name, email, comment, date } = req.body;
+const { name, email, comment} = req.body;
 
-if (!name || !comment || !date) {
+if (!name || !comment) {
     return res.status(400).json({ error: 'Missing required fields' });
 }
 
+email = email || '';
+
+const date =  new Date().toISOString().split('T')[0];
+
 const { data, error } = await supabase.from('comments').insert([
-    { name, email, comment, date, created_at: new Date(), verified: false }
+    { name: name, email: email , comment: comment, date: date, verified: false }
 ]);
 
 if (error) {
