@@ -9,6 +9,7 @@ const styles = `
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
+            font-size: 0.9rem;
         }
 
         .container {
@@ -23,6 +24,14 @@ const styles = `
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h2{
+            font-size: 1.25rem;
+        }
+
+        .comment-form >h2{
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -43,7 +52,6 @@ const styles = `
             background-color: white;
             border: 1px solid #e1e4e8;
             border-radius: 8px;
-            font-size: 14px;
             transition: all 0.2s ease;
         }
 
@@ -66,7 +74,6 @@ const styles = `
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
             font-weight: 600;
             transition: all 0.2s ease;
         }
@@ -110,18 +117,15 @@ const styles = `
         .comment-author {
             font-weight: 600;
             color: #2c3e50;
-            font-size: 15px;
         }
 
         .comment-date {
             color: #6c757d;
-            font-size: 13px;
         }
 
         .comment-content {
             color: #4a5568;
             line-height: 1.6;
-            font-size: 14px;
         }
 
         /* Add subtle animation to form inputs */
