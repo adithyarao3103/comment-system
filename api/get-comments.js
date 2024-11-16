@@ -138,7 +138,7 @@ const styles = `
 
         @media (max-width: 600px){
             * {
-                font-size: calc(1.5vh + 5px);
+                font-size: calc(1.25vh + 5px);
             }
         }
     </style>
