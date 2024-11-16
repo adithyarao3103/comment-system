@@ -211,7 +211,7 @@ let addform = `
         <!-- Comment Form -->
         <div class="comment-form" id="comment-form">
             <h2>Add a Comment</h2>
-            <form id="addCommentForm" onsubmit="return false">
+            <form id="addCommentForm">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
@@ -248,6 +248,8 @@ let scripts = `
         <script>
         document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        console.log('Form submitted');
         
         // Show loading spinner
         const loading = document.getElementById('loading');
