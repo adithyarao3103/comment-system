@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import bcrypt from 'bcryptjs'
+import crypto from 'crypto';
 
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_KEY
@@ -13,7 +13,15 @@ if (req.method !== 'POST' && req.method !== 'GET') {
 // Handle login
 if (req.method === 'POST') {
     const { password } = req.body
-    const isValid = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH)
+
+    const hashedPassword = crypto
+                .createHash('sha256')
+                .update(password)
+                .digest('hex');
+
+            const correctPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+
+    const isValid = !correctPasswordHash || hashedPassword !== correctPasswordHash
     
     if (!isValid) {
     return res.status(401).json({ error: 'Invalid password' })
