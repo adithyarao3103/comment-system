@@ -1,7 +1,9 @@
 {
-"name": "comments",
-"version": "1.0.0",
-"dependencies": {
-        "@supabase/supabase-js": "^1.24.09"
+    "name": "static-comments",
+    "version": "1.0.0",
+    "description": "Comment system for static websites",
+    "dependencies": {
+    "@supabase/supabase-js": "^1.24.09",
+    "bcryptjs": "^2.4.3"
     }
 }
