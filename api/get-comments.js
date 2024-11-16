@@ -9,7 +9,7 @@ const styles = `
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
-            font-size: 0.9rem;
+            font-size: calc(0.55vw + 5px);
         }
 
         .container {
@@ -27,7 +27,7 @@ const styles = `
         }
 
         h2{
-            font-size: 1.25rem;
+            font-size: 1.5em;
         }
 
         .comment-form >h2{
@@ -134,6 +134,12 @@ const styles = `
             transform: translateY(-3px);
             opacity: 0.7;
             transition: all 0.2s ease;
+        }
+
+        @media (max-width: 600px){
+            * {
+                font-size: calc(1.5vh + 5px);
+            }
         }
     </style>
 `
