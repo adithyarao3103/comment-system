@@ -149,11 +149,13 @@ export default async function handler(req, res) {
 
     const renderDashboard = async () => {
 
-        const { comments, error } = await supabase
+        const { data, error } = await supabase
                 .from('comments')
                 .select('*')
                 .eq('verified', false)
                 .order('created_at', { ascending: false })
+
+        const comments = data || [];
         
         return `
             <html>
@@ -252,7 +254,7 @@ export default async function handler(req, res) {
                         <h1>Counter Dashboard</h1>
                         <div class="counter-list" id="counter-list">
                             <h2>Current Counters</h2>
-                            ${comments === null ? '<p>No counters found.</p>' :  comments.map(comment => `
+                            ${comments.map(comment => `
                             <div class="comment" id="comment-${comment.id}" style="transition: opacity 0.3s ease">
                                 <div class="name">${comment.name}</div>
                                 <div class="email">${comment.email}</div>
