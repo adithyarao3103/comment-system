@@ -254,7 +254,7 @@ let scripts = `
             
             // Get form data
             const name = encodeURIComponent(document.getElementById('name').value);
-            const email = email? encodeURIComponent(document.getElementById('email').value) : '';
+            const email = encodeURIComponent(document.getElementById('email').value);
             const comment = encodeURIComponent(document.getElementById('comment').value);
             
             try {
