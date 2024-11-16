@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [
+        {
+        "src": "api/*.js",
+        "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+        "src": "/add-comment",
+        "methods": ["POST"],
+        "dest": "/api/add-comment.js"
+        },
+        {
+        "src": "/get-comments",
+        "methods": ["GET"],
+        "dest": "/api/get-comments.js"
+        },
+        {
+        "src": "/dashboard",
+        "methods": ["GET", "POST"],
+        "dest": "/api/dashboard.js"
+        }
+    ]
+    }
