@@ -272,7 +272,7 @@ let scripts = `
             
             if (response.ok) {
                 // Hide the form
-                document.getElementById('commentForm').style.display = 'none';
+                document.getElementById('comment-form').style.display = 'none';
                 // Show success message
                 document.getElementById('successMessage').style.display = 'block';
             } else {
