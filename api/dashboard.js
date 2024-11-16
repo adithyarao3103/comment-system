@@ -73,7 +73,7 @@ function getLoginPage(error = '') {
         <div class="login-container">
             <h1>Moderator Login</h1>
             ${error ? `<div class="error">${error}</div>` : ''}
-            <form method="POST" action="/api/moderator">
+            <form method="POST" action="getDashboardPage()">
                 <input type="password" name="password" placeholder="Enter moderator password" required>
                 <button type="submit">Login</button>
             </form>
