@@ -225,7 +225,7 @@ let addform = `
                     <textarea id="comment" name="comment" placeholder="Write your comment here..." required></textarea>
                 </div>
                 <div class="submit-wrapper">
-                    <button type="submit">Post Comment</button>
+                    <button type="submit" onclick="submit()">Post Comment</button>
                     <div id="loading" class="loading"></div>
                 </div>
             </form>
@@ -253,55 +253,50 @@ let scripts = `
             console.error('Form not found');
         }
 
-        document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        console.log('going to add comment');
+        function submit(){
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
         
-        // Show loading spinner
-        const loading = document.getElementById('loading');
-        loading.style.display = 'block';
+            // Reset error and success messages
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
         
-        // Reset error and success messages
-        document.getElementById('errorMessage').style.display = 'none';
-        document.getElementById('successMessage').style.display = 'none';
+            // Get form data
+            const name = encodeURIComponent(document.getElementById('name').value);
+            const email = encodeURIComponent(document.getElementById('email').value);
+            const comment = encodeURIComponent(document.getElementById('comment').value);
         
-        // Get form data
-        const name = encodeURIComponent(document.getElementById('name').value);
-        const email = encodeURIComponent(document.getElementById('email').value);
-        const comment = encodeURIComponent(document.getElementById('comment').value);
-        
-        try {
-            // Construct the URL with encoded parameters
-            const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
+            try {
+                // Construct the URL with encoded parameters
+                const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
                     name + "&comment=" + comment + "&email=" + email;
             
-            // Make the request
-            const response = await fetch(url);
-            const data = await response.json(); // Parse the JSON response
+                // Make the request
+                const response = await fetch(url);
+                const data = await response.json(); // Parse the JSON response
             
-            if (response.ok) {
-                // Hide the form
-                document.getElementById('comment-form').style.display = 'none';
-                // Show success message
-                document.getElementById('successMessage').style.display = 'block';
-            } else {
-                // Show error message with the error from the server if available
+                if (response.ok) {
+                    // Hide the form
+                    document.getElementById('comment-form').style.display = 'none';
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    // Show error message with the error from the server if available
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.textContent = data.error || 'An error occurred while submitting the comment.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                // Show error message for network or parsing errors
                 const errorMessage = document.getElementById('errorMessage');
-                errorMessage.textContent = data.error || 'An error occurred while submitting the comment.';
+                errorMessage.textContent = 'An error occurred while submitting the comment. Please try again.';
                 errorMessage.style.display = 'block';
+                console.error('Error:', error);
+            } finally {
+                // Hide loading spinner
+                loading.style.display = 'none';
             }
-        } catch (error) {
-            // Show error message for network or parsing errors
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = 'An error occurred while submitting the comment. Please try again.';
-            errorMessage.style.display = 'block';
-            console.error('Error:', error);
-        } finally {
-            // Hide loading spinner
-            loading.style.display = 'none';
         }
-    });
     </script>
 `
 
