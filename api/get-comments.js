@@ -12,8 +12,8 @@ const styles = `
             font-size: calc(0.55vw + 5px);
         }
 
-        .container {
-            max-width: 800px;
+        .container-comments {
+            max-width: 1200px;
             margin: 40px auto;
             padding: 20px;
         }
@@ -200,7 +200,7 @@ if (error) {
 }
 
 let addform = `
-<div class="container">
+<div class="container-comments">
         <div id="successMessage" class="success-message">
             Thank you! Your comment has been submitted and is waiting for review.
         </div>
