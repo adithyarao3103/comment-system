@@ -246,43 +246,52 @@ data.forEach(comment => {
 let scripts = `
         <script>
         document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        e.preventDefault();
+        
+        // Show loading spinner
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+        
+        // Reset error and success messages
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'none';
+        
+        // Get form data
+        const name = encodeURIComponent(document.getElementById('name').value);
+        const email = encodeURIComponent(document.getElementById('email').value);
+        const comment = encodeURIComponent(document.getElementById('comment').value);
+        
+        try {
+            // Construct the URL with encoded parameters
+            const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
+                    name + "&comment=" + comment + "&email=" + email;
             
-            // Show loading spinner
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
+            // Make the request
+            const response = await fetch(url);
+            const data = await response.json(); // Parse the JSON response
             
-            // Get form data
-            const name = encodeURIComponent(document.getElementById('name').value);
-            const email = encodeURIComponent(document.getElementById('email').value);
-            const comment = encodeURIComponent(document.getElementById('comment').value);
-            
-            try {
-                // Construct the URL with encoded parameters
-                const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + name + "&comment=" + comment + "&email=" + email;
-                
-                // Make the request
-                const response = await fetch(url);
-
-                console.log(response);
-                
-                if (response.ok) {
-                    // Hide the form
-                    document.getElementById('commentForm').style.display = 'none';
-                    // Show success message
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    // Show error message
-                    document.getElementById('errorMessage').style.display = 'block';
-                }
-            } catch (error) {
-                // Show error message
-                document.getElementById('errorMessage').style.display = 'block';
-            } finally {
-                // Hide loading spinner
-                loading.style.display = 'none';
+            if (response.ok) {
+                // Hide the form
+                document.getElementById('commentForm').style.display = 'none';
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+            } else {
+                // Show error message with the error from the server if available
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = data.error || 'An error occurred while submitting the comment.';
+                errorMessage.style.display = 'block';
             }
-        });
+        } catch (error) {
+            // Show error message for network or parsing errors
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'An error occurred while submitting the comment. Please try again.';
+            errorMessage.style.display = 'block';
+            console.error('Error:', error);
+        } finally {
+            // Hide loading spinner
+            loading.style.display = 'none';
+        }
+    });
     </script>
 `
 
