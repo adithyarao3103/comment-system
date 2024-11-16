@@ -4,17 +4,10 @@ const supabaseUrl = process.env.SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-// Helper function to generate the login page HTML
-function getLoginPage(error = '') {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Moderator Login</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+export default async function handler(req, res) {
+    const commonStyles = `
         <style>
-        body {
+            body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
@@ -67,32 +60,7 @@ function getLoginPage(error = '') {
         button:hover {
             background: #45a049;
         }
-        </style>
-    </head>
-    <body>
-        <div class="login-container">
-            <h1>Moderator Login</h1>
-            ${error ? `<div class="error">${error}</div>` : ''}
-            <form method="POST" action="getDashboardPage()">
-                <input type="password" name="password" placeholder="Enter moderator password" required>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    </body>
-    </html>
-  `
-}
 
-// Helper function to generate the dashboard HTML
-function getDashboardPage(comments) {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Comment Moderation</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             max-width: 800px;
@@ -151,136 +119,189 @@ function getDashboardPage(comments) {
         }
         .delete:hover { background: #da190b; }
         </style>
-        <script>
-        async function moderateComment(id, action) {
-            try {
-                const response = await fetch('/api/moderator', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': sessionStorage.getItem('moderatorToken')
-                    },
-                    body: JSON.stringify({ id, action })
-                });
-                
-                if (response.ok) {
-                    const comment = document.getElementById('comment-' + id);
-                    comment.style.opacity = '0';
-                    setTimeout(() => comment.remove(), 300);
-                } else {
-                    alert('Error: ' + (await response.json()).error);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error processing request');
-            }
-        }
+    `;
 
-        function logout() {
-            sessionStorage.removeItem('moderatorToken');
-            window.location.reload();
-        }
-        </script>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Comment Moderation</h1>
-            <button class="logout" onclick="logout()">Logout</button>
-        </div>
-        ${comments.length === 0 ? '<p>No comments pending moderation.</p>' : ''}
-        ${comments.map(comment => `
-        <div class="comment" id="comment-${comment.id}" style="transition: opacity 0.3s ease">
-            <div class="name">${comment.name}</div>
-            <div class="email">${comment.email}</div>
-            <div class="date">${new Date(comment.created_at).toLocaleDateString()}</div>
-            <div class="content">${comment.comment}</div>
-            <div class="actions">
-                <button class="approve" onclick="moderateComment(${comment.id}, 'approve')">Approve</button>
-                <button class="delete" onclick="moderateComment(${comment.id}, 'delete')">Delete</button>
-            </div>
-        </div>
-        `).join('')}
-    </body>
-    </html>
-  `
-}
+    const renderLoginPage = (error = '') => `
+        <html>
+            <head>
+                <title>Comment System | Dashboard</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <meta nam"author" content="Adithya A Rao"/>
+                <meta name="description" content="Dashboard for the Comments for static websites."/>
+                <meta name="keywords" content="comments, static websites, dashboard, password"/>
+                ${commonStyles}
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Comments Moderator Login</h1>
+                    ${error ? `<div class="error-box">${error}</div>` : ''}
+                    <div class="login-form">
+                        <form method="POST">
+                            <input type="password" name="password" placeholder="Enter password" class="input" required>
+                            <button type="submit" class="button">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `;
 
-export default async function handler(req, res) {
-    if (req.method === 'GET') {
-        // Check if user is already authenticated
-        const authHeader = req.headers.authorization
-        if (!authHeader || `Bearer ${process.env.MODERATOR_PASSWORD}` !== authHeader) {
-            // If not authenticated, show login page
-            return res.status(200).send(getLoginPage())
-        }
+    const renderDashboard = async () => {
 
-        try {
-            // Fetch unverified comments
-            const { data, error } = await supabase
+        const { comments, error } = await supabase
                 .from('comments')
                 .select('*')
                 .eq('verified', false)
                 .order('created_at', { ascending: false })
 
-            if (error) throw error
 
-            // Return dashboard page
-            return res.status(200).send(getDashboardPage(data))
-        } catch (error) {
-            console.error('Error fetching comments:', error)
-            return res.status(500).json({ error: 'Error fetching comments' })
-        }
-    }
-
-    if (req.method === 'POST') {
-        // Handle login
-        if (req.body.password) {
-            if (req.body.password === process.env.MODERATOR_PASSWORD) {
-                // Set token in response
-                const token = `Bearer ${process.env.MODERATOR_PASSWORD}`
-                const script = `
+        return `
+            <html>
+                <head>
+                    ${commonStyles}
                     <script>
-                        sessionStorage.setItem('moderatorToken', '${token}');
-                        getDashoardPage();
+                        const password = '${password}';
+
+                        function showAlert(message, type = 'success') {
+                            const alertDiv = document.createElement('div');
+                            alertDiv.className = \`custom-alert \${type}\`;
+                            alertDiv.innerHTML = \`
+                                <div class="custom-alert-content">\${message}</div>
+                                <span class="custom-alert-close" onclick="this.parentElement.remove()">×</span>
+                            \`;
+                            document.body.appendChild(alertDiv);
+                            
+                            // Trigger reflow to enable transition
+                            alertDiv.offsetHeight;
+                            alertDiv.style.opacity = '1';
+
+                            // Auto-remove after 3 seconds
+                            setTimeout(() => {
+                                alertDiv.style.opacity = '0';
+                                setTimeout(() => alertDiv.remove(), 300);
+                            }, 3000);
+                        }
+
+                        function showConfirmDialog(message, onConfirm) {
+                            const overlay = document.createElement('div');
+                            overlay.className = 'confirm-dialog-overlay';
+                            overlay.innerHTML = \`
+                                <div class="confirm-dialog">
+                                    <div>\${message}</div>
+                                    <div class="confirm-dialog-buttons">
+                                        <button class="button" onclick="this.closest('.confirm-dialog-overlay').remove()">Cancel</button>
+                                        <button class="button delete-btn" onclick="confirmAction(this)">Confirm</button>
+                                    </div>
+                                </div>
+                            \`;
+                            document.body.appendChild(overlay);
+                            overlay.style.display = 'flex';
+
+                            // Store the callback
+                            overlay.querySelector('.delete-btn').onclick = () => {
+                                onConfirm();
+                                overlay.remove();
+                            };
+                        }
+
+                        async function updateCounter(name) {
+                            const value = document.getElementById('value-' + name).value;
+                            if (value.trim() === "") {
+                                window.location.reload();
+                                return;
+                            }
+                            try {
+                                const response = await fetch('/set?name=' + name + '&value=' + value + '&password=' + password, {
+                                    method: 'POST'
+                                });
+                                if (response.ok) {
+                                    showAlert('Counter updated successfully');
+                                    window.location.reload();
+                                } else {
+                                    showAlert('Failed to update counter', 'error');
+                                }
+                            } catch (error) {
+                                showAlert('An error occurred while updating the counter', 'error');
+                            }
+                        }
+
+                        async function deleteCounter(name) {
+                            showConfirmDialog('Are you sure you want to delete this counter?', async () => {
+                                try {
+                                    const response = await fetch('/remove?name=' + name + '&password=' + password, {
+                                        method: 'POST'
+                                    });
+                                    if (response.ok) {
+                                        showAlert('Counter deleted successfully');
+                                        document.getElementById("counter-" + name).outerHTML = "";
+                                    } else {
+                                        showAlert('Failed to delete counter', 'error');
+                                    }
+                                } catch (error) {
+                                    showAlert('An error occurred while deleting the counter', 'error');
+                                }
+                            });
+                        }
                     </script>
-                `
-                return res.status(200).send(script)
-            } else {
-                return res.status(200).send(getLoginPage('Invalid password'))
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>Counter Dashboard</h1>
+                        <div class="counter-list" id="counter-list">
+                            <h2>Current Counters</h2>
+                            ${comments.length === 0 ? '<p>No comments pending moderation.</p>' : ''}
+                            ${comments.map(comment => `
+                            <div class="comment" id="comment-${comment.id}" style="transition: opacity 0.3s ease">
+                                <div class="name">${comment.name}</div>
+                                <div class="email">${comment.email}</div>
+                                <div class="date">${new Date(comment.created_at).toLocaleDateString()}</div>
+                                <div class="content">${comment.comment}</div>
+                                <div class="actions">
+                                    <button class="approve" onclick="moderateComment(${comment.id}, 'approve')">Approve</button>
+                                    <button class="delete" onclick="moderateComment(${comment.id}, 'delete')">Delete</button>
+                                </div>
+                            </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </body>
+            </html>
+        `;
+    };
+
+    try {
+        if (req.method === 'GET') {
+            res.setHeader('Content-Type', 'text/html');
+            return res.send(renderLoginPage());
+        }
+        
+        if (req.method === 'POST') {
+            const { password } = req.body;
+
+            if (!password) {
+                res.setHeader('Content-Type', 'text/html');
+                return res.send(renderLoginPage('Password is required'));
             }
-        }
 
-        // Handle comment moderation
-        const authHeader = req.headers.authorization
-        if (!authHeader || `Bearer ${process.env.MODERATOR_PASSWORD}` !== authHeader) {
-            return res.status(401).json({ error: 'Unauthorized' })
-        }
+            const hashedPassword = crypto
+                .createHash('sha256')
+                .update(password)
+                .digest('hex');
 
-        try {
-            const { id, action } = req.body
+            const correctPasswordHash = process.env.ADMIN_PASSWORD_HASH;
 
-            if (action === 'approve') {
-                const { error } = await supabase
-                    .from('comments')
-                    .update({ verified: true })
-                    .eq('id', id)
-
-                if (error) throw error
-            } else if (action === 'delete') {
-                const { error } = await supabase
-                    .from('comments')
-                    .delete()
-                    .eq('id', id)
-
-                if (error) throw error
+            if (!correctPasswordHash || hashedPassword !== correctPasswordHash) {
+                res.setHeader('Content-Type', 'text/html');
+                return res.send(renderLoginPage('Invalid password'));
             }
 
-            return res.status(200).json({ success: true })
-        } catch (error) {
-            console.error('Error moderating comment:', error)
-            return res.status(500).json({ error: 'Error moderating comment' })
+            res.setHeader('Content-Type', 'text/html');
+            res.send(await renderDashboard());
         }
+
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        res.setHeader('Content-Type', 'text/html');
+        res.status(500).send(renderLoginPage('An error occurred. Please try again.'));
     }
-
-    return res.status(405).json({ error: 'Method not allowed' })
 }
