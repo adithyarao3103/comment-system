@@ -212,7 +212,7 @@ let addform = `
         <!-- Comment Form -->
         <div class="comment-form">
             <h2>Add a Comment</h2>
-            <form id="commentForm">
+            <form id="addCommentForm">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
