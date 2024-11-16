@@ -163,8 +163,7 @@ export default async function handler(req, res) {
                     ${commonStyles}
                     <script>
                         const password = 'xyz';
-                        console.log(${error});
-                        console.log(${comments});
+                        console.log(${data});
 
 
                         function showAlert(message, type = 'success') {
@@ -251,13 +250,13 @@ export default async function handler(req, res) {
                 </head>
                 <body>
                     <div class="container">
-                        <h1>Counter Dashboard</h1>
+                        <h1>Comments Dashboard</h1>
                         <div class="counter-list" id="counter-list">
-                            <h2>Current Counters</h2>
+                            <h2>Comments</h2>
                             ${comments.map(comment => `
                             <div class="comment" id="comment-${comment.id}" style="transition: opacity 0.3s ease">
                                 <div class="name">${comment.name}</div>
-                                <div class="email">${comment.email}</div>
+                                <div class="email">${comment.email ? comment.email : ''}</div>
                                 <div class="date">${new Date(comment.created_at).toLocaleDateString()}</div>
                                 <div class="content">${comment.comment}</div>
                                 <div class="actions">
