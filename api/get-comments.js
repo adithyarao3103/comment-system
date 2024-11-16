@@ -211,7 +211,7 @@ let addform = `
         <!-- Comment Form -->
         <div class="comment-form" id="comment-form">
             <h2>Add a Comment</h2>
-            <form id="addCommentForm" onsubmit="return false;">
+            <div id="addCommentForm">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
@@ -228,7 +228,7 @@ let addform = `
                     <button type="submit" onclick="submit()">Post Comment</button>
                     <div id="loading" class="loading"></div>
                 </div>
-            </form>
+            </div>
         </div>`
 
 let commentList = `<div class="comments-list"><h2>Comments</h2>`;
