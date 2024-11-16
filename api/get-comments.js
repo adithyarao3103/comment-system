@@ -246,6 +246,13 @@ commentList += `</div></div>`;
 
 let scripts = `
         <script>
+        console.log('Script is running'); // Check if the script runs
+        const form = document.getElementById('addCommentForm');
+        console.log('Form element:', form); // Check if the form element is found
+        if (!form) {
+            console.error('Form not found');
+        }
+
         document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
