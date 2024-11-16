@@ -136,6 +136,50 @@ const styles = `
             transition: all 0.2s ease;
         }
 
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            display: none;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: none;
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .submit-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+
         @media (max-width: 600px){
             * {
                 font-size: calc(1.25vh + 5px);
@@ -157,6 +201,14 @@ if (error) {
 
 let addform = `
 <div class="container">
+        <div id="successMessage" class="success-message">
+            Thank you! Your comment has been submitted and is waiting for review.
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            Sorry, there was an error submitting your comment. Please try again later.
+        </div>
+
         <!-- Comment Form -->
         <div class="comment-form">
             <h2>Add a Comment</h2>
@@ -166,14 +218,17 @@ let addform = `
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <label for="email">Email (Optional):</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email">
                 </div>
                 <div class="form-group">
                     <label for="comment">Comment:</label>
                     <textarea id="comment" name="comment" placeholder="Write your comment here..." required></textarea>
                 </div>
-                <button type="submit">Post Comment</button>
+                <div class="submit-wrapper">
+                    <button type="submit">Post Comment</button>
+                    <div id="loading" class="loading"></div>
+                </div>
             </form>
         </div>`
 
@@ -188,8 +243,49 @@ data.forEach(comment => {
             </div>`;
 });
 
+let scripts = `
+        <script>
+        document.getElementById('addCommentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading spinner
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            // Get form data
+            const name = encodeURIComponent(document.getElementById('name').value);
+            const email = email? encodeURIComponent(document.getElementById('email').value) : '';
+            const comment = encodeURIComponent(document.getElementById('comment').value);
+            
+            try {
+                // Construct the URL with encoded parameters
+                const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + name + "&comment=" + comment + "&email=" + email;
+                
+                // Make the request
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    // Hide the form
+                    document.getElementById('commentForm').style.display = 'none';
+                    // Show success message
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    // Show error message
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            } catch (error) {
+                // Show error message
+                document.getElementById('errorMessage').style.display = 'block';
+            } finally {
+                // Hide loading spinner
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+`
+
 const html = `
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> ${styles} ${addform} ${commentList}`
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> ${styles} ${addform} ${commentList} ${scripts}`
 
 res.setHeader('Content-Type', 'text/html');
 res.status(200).send(html);
