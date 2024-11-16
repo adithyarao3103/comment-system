@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         return;
     }
 
-    const { name, email, comment} = req.query;
+    var { name, email, comment} = req.query;
 
     if (!name || !comment) {
         return res.status(400).json({ error: 'Missing required fields' });
