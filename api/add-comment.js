@@ -3,10 +3,15 @@ import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 export default async function handler(req, res) {
+
     if (req.method === 'OPTIONS') {
         res.status(200).end();
         return;
     }
+
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Access-Control-Allow-Origin', '*');  // Or specific origins
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
 
     var { name, email, comment} = req.query;
 
