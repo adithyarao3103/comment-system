@@ -210,7 +210,7 @@ let addform = `
         </div>
 
         <!-- Comment Form -->
-        <div class="comment-form">
+        <div class="comment-form" id="comment-form">
             <h2>Add a Comment</h2>
             <form id="addCommentForm">
                 <div class="form-group">
