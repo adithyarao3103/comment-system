@@ -7,7 +7,7 @@ if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
 }
 
-const { name, email, comment} = req.body;
+const { name, email, comment} = req.query;
 
 if (!name || !comment) {
     return res.status(400).json({ error: 'Missing required fields' });
