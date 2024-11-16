@@ -5,7 +5,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const styles = `
     <style>
     .container{
-        width: 100%;
+        width: 90%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -14,17 +14,19 @@ const styles = `
         padding: 0 20px
         row-gap: 10px;
     }
+    
     .comment{
-        width: 100%;
+        width: 90%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 20px 20px;
         row-gap: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
+    
     .name-date{
         display: flex;
         flex-direction: row;
@@ -32,20 +34,23 @@ const styles = `
         justify-content: space-between;
         width: 100%;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 10px 10px;
 
     }
     .name{
         font-weight: bold;
+        font-size: 1.2rem;
     }
     .date{
         font-style: italic;
+        font-size: 0.8rem;
     }
     .comment-text{
         width: 100%;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 10px 10px;
         row-gap: 10px;
+        font-size: 1rem;
     }
     </style>
 `
