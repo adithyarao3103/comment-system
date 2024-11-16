@@ -161,7 +161,7 @@ export default async function handler(req, res) {
                 <head>
                     ${commonStyles}
                     <script>
-                        const password = '${password}';
+                        const password = 'xyz';
 
                         function showAlert(message, type = 'success') {
                             const alertDiv = document.createElement('div');
