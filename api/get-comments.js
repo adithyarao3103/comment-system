@@ -4,12 +4,11 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 const styles = `
     <style>
-    * {
+        .container-comments> * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
-            font-size: calc(0.55vw + 5px);
         }
 
         .container-comments {
