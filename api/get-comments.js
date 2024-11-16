@@ -4,54 +4,133 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 const styles = `
     <style>
-    .container{
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        padding: 0 20px
-        row-gap: 10px;
-    }
-    
-    .comment{
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        padding: 20px 20px;
-        row-gap: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .name-date{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin: 0 auto;
-        padding: 10px 10px;
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    }
-    .name{
-        font-weight: bold;
-        font-size: 1.2rem;
-    }
-    .date{
-        font-style: italic;
-        font-size: 0.8rem;
-    }
-    .comment-text{
-        width: 100%;
-        margin: 0 auto;
-        padding: 10px 10px;
-        row-gap: 10px;
-        font-size: 1rem;
-    }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .comment-form {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        }
+
+        .comments-list {
+            margin-top: 30px;
+        }
+
+        .comments-list h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .comment {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .comment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .comment-date {
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .comment-content {
+            color: #4a5568;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Add subtle animation to form inputs */
+        .form-group input:focus::placeholder,
+        .form-group textarea:focus::placeholder {
+            transform: translateY(-3px);
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
     </style>
 `
 
@@ -66,11 +145,39 @@ if (error) {
     return res.status(500).json({ error: error.message });
 }
 
-let html = '<html><body>' + styles + '<div class="container">';
+let addform = `
+<div class="container">
+        <!-- Comment Form -->
+        <div class="comment-form">
+            <h2>Add a Comment</h2>
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" name="comment" placeholder="Write your comment here..." required></textarea>
+                </div>
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>`
+
+let commentList = `<div class="comments-list"><h2>Comments</h2>`;
 data.forEach(comment => {
-    html += `<div class="comment"> <div class="name-date"> <div class="name">${comment.name}</div><div class="date">${comment.date}</div></div><div class="comment-text">${comment.comment}</div></div>`;
+    commentList += `<div class="comment">
+                <div class="comment-header">
+                    <span class="comment-author">${comment.name}</span>
+                    <span class="comment-date">${comment.date}</span>
+                </div>
+                <div class="comment-content">${comment.comment}</div>
+            </div>`;
 });
-html += '</ul></body></html>';
+html = `${styles} ${addform} ${commentList}`
 
 res.setHeader('Content-Type', 'text/html');
 res.status(200).send(html);
