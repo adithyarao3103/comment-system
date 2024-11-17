@@ -22,6 +22,23 @@ export default async function handler(req, res) {
                 box-sizing: border-box;
             }
 
+        h1, h2 {
+                color: #333;
+                font-size: 24px;
+                margin: 10px 0;
+            }
+        
+        .input {
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                margin: 5px 0;
+                width: 100%;
+                box-sizing: border-box;
+                font-size: 16px; /* Prevents zoom on iOS */
+                max-width: 100%;
+            }
+
         .error-box {
                 padding: 15px;
                 border: 1px solid #ff4444;
