@@ -197,7 +197,7 @@ if (error) {
 }
 
 let addform = `
-<div class="container-comments">
+<div class="container-comments" id="comments-container">
         <div id="successMessage" class="success-message">
             Thank you! Your comment has been submitted and is waiting for review.
         </div>
