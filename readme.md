@@ -32,8 +32,6 @@ async function fetchComments() {
       const style = htmlContent.querySelector('style');
       const script = htmlContent.querySelector('script');
   
-      console.log('Comments:', comments);
-      // Safely insert the HTML content
       commentsDiv.innerHTML = comments.innerHTML;
       const newScript = document.createElement('script');
       newScript.text = script.innerText;
