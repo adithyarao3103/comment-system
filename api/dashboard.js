@@ -6,7 +6,33 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 export default async function handler(req, res) {
     const commonStyles = `
         <style>
-             .container-comments> * {
+        body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                background-color: #f5f5f5;
+                padding: 10px;
+            }
+
+        .error-box {
+                padding: 15px;
+                border: 1px solid #ff4444;
+                background-color: #ffeeee;
+                border-radius: 4px;
+                margin: 15px 0;
+                word-wrap: break-word;
+            }
+
+            .login-form {
+                background: white;
+                padding: 15px;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+            }
+
+
+        .container-comments> * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -159,6 +185,92 @@ export default async function handler(req, res) {
         .delete-btn:hover {
             background-color: #dc2626;
         }
+
+        /* Custom Alert Styles */
+            .custom-alert {
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 12px 20px;
+                border-radius: 4px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 90%;
+                max-width: 500px;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                box-sizing: border-box;
+            }
+
+            .custom-alert.success {
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                color: #155724;
+            }
+
+            .custom-alert.error {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                color: #721c24;
+            }
+
+            .custom-alert.warning {
+                background-color: #fff3cd;
+                border: 1px solid #ffeeba;
+                color: #856404;
+            }
+
+            .custom-alert-content {
+                flex-grow: 1;
+                margin-right: 12px;
+                font-size: 14px;
+            }
+
+            .custom-alert-close {
+                cursor: pointer;
+                font-weight: bold;
+                opacity: 0.7;
+                padding: 8px;
+                font-size: 18px;
+            }
+
+            /* Confirmation Dialog Styles */
+            .confirm-dialog-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 15px;
+            }
+
+            .confirm-dialog {
+                background: white;
+                padding: 20px;
+                border-radius: 4px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                width: 90%;
+                max-width: 400px;
+                margin: 0 auto;
+                box-sizing: border-box;
+            }
+
+            .confirm-dialog-buttons {
+                margin-top: 20px;
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
         </style>
     `;
 
