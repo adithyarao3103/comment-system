@@ -413,7 +413,7 @@ export default async function handler(req, res) {
                 </head>
                 <body>
                     <div class="container">
-                        <h1>Counter Dashboard</h1>
+                        <h1>Comments Dashboard</h1>
                         <div class="counter-list" id="counter-list">
                             <h2>Comments to be moderated</h2>
                             ${data.map(comment => `
