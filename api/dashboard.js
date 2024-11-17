@@ -14,6 +14,14 @@ export default async function handler(req, res) {
                 padding: 10px;
             }
 
+        .container {
+                max-width: 50vw;
+                margin: 0 auto;
+                padding: 0 15px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
         .error-box {
                 padding: 15px;
                 border: 1px solid #ff4444;
@@ -353,7 +361,7 @@ export default async function handler(req, res) {
 
                         async function approveComment(id) {
                             try {
-                                const response = await fetch('/approve?id=' + id + '&password=' + password, {
+                                const response = await fetch('/api/approve?id=' + id + '&password=' + password, {
                                     method: 'POST'
                                 });
                                 if (response.ok) {
@@ -370,7 +378,7 @@ export default async function handler(req, res) {
                         async function deleteComment(id) {
                             showConfirmDialog('Are you sure you want to delete this comment?', async () => {
                                 try {
-                                    const response = await fetch('/delete?id=' + id + '&password=' + password, {
+                                    const response = await fetch('/api/delete?id=' + id + '&password=' + password, {
                                         method: 'POST'
                                     });
                                     if (response.ok) {
