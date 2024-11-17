@@ -181,6 +181,10 @@ const styles = `
                 font-size: calc(1.25vh + 5px);
             }
         }
+        
+        .attribution a:hover {
+            text-decoration: underline;
+        }
     </style>
 `
 
@@ -226,6 +230,9 @@ let addform = `
                     <div id="loading" class="loading"></div>
                 </div>
             </div>
+            <div class="attribution" style="text-align: center; margin-top: 20px; font-size: 0.8em; color: #666;">
+            Powered by <a href="https://github.com/adithyarao3103/comments-manager" style="color: #666; text-decoration: none;">comments-manager</a> by Adithya
+        </div>
         </div>`
 
 let commentList = `<div class="comments-list"><h2>Comments</h2>`;
