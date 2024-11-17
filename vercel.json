@@ -1,7 +1,7 @@
 {
     "version": 2,
     "routes": [
-    {"src": "/", "status": 301, "headers": {"Location": "https://github.com/adithyarao3103/Visitor-Counter" }},
+    {"src": "/", "status": 301, "headers": {"Location": "https://github.com/adithyarao3103/comments-manager" }},
     { "src": "/api/add-comment", "dest": "/api/add-comment.js" },
     { "src": "/api/get-comments", "dest": "/api/get-comments.js" },
     { "src": "/dashboard", "dest": "/api/dashboard.js" },
