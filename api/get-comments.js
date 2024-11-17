@@ -25,12 +25,9 @@ const styles = `
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
-        h2{
-            font-size: 1.5em;
-        }
-
         .comment-form >h2{
             margin-bottom: 20px;
+            font-size: 1.5em;
         }
 
         .form-group {
@@ -66,7 +63,7 @@ const styles = `
             resize: vertical;
         }
 
-        button {
+        .comment-button {
             background-color: #007bff;
             color: white;
             padding: 12px 24px;
@@ -77,7 +74,7 @@ const styles = `
             transition: all 0.2s ease;
         }
 
-        button:hover {
+        .comment-button:hover {
             background-color: #0056b3;
             transform: translateY(-1px);
             box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
@@ -90,6 +87,7 @@ const styles = `
         .comments-list h2 {
             margin-bottom: 20px;
             color: #2c3e50;
+            font-size: 1.5em;
         }
 
         .comment {
@@ -180,7 +178,7 @@ const styles = `
 
 
         @media (max-width: 600px){
-            * {
+            .container-comments > * {
                 font-size: calc(1.25vh + 5px);
             }
         }
@@ -225,7 +223,7 @@ let addform = `
                     <textarea id="comment" name="comment" placeholder="Write your comment here..." required></textarea>
                 </div>
                 <div class="submit-wrapper">
-                    <button type="submit" onclick="submit()">Post Comment</button>
+                    <button class="comment-button" type="submit" onclick="submit()">Post Comment</button>
                     <div id="loading" class="loading"></div>
                 </div>
             </div>
