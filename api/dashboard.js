@@ -416,6 +416,7 @@ export default async function handler(req, res) {
                         <h1>Comments Dashboard</h1>
                         <div class="counter-list" id="counter-list">
                             <h2>Comments to be moderated</h2>
+                            ${data.length === 0 ? '<p>No comments to be moderated</p>' : ''}
                             ${data.map(comment => `
                                 <div class="comment-card">
                                 <div class="comment-header">
