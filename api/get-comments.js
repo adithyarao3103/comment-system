@@ -265,7 +265,7 @@ let scripts = `
         
             try {
                 // Construct the URL with encoded parameters
-                const url = "https://comment-system-adithyarao3103.vercel.app/api/add-comment?name=" + 
+                const url = "https://comments-manager-adithyarao3103.vercel.app/api/add-comment?name=" + 
                     name + "&comment=" + comment + "&email=" + email;
             
                 // Make the request
